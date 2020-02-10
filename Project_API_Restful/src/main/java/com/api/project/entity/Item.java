@@ -1,5 +1,6 @@
 package com.api.project.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -7,10 +8,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "item")
-public class Item {
+public class Item implements Serializable {
 
 	@Id
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(updatable = false, nullable = false)
 	private int id;
 	@Column(name = "item_code")
 	private int itemCode;

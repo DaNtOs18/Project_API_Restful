@@ -1,17 +1,20 @@
 package com.api.project.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="user")
-public class User {
+public class User implements Serializable{
 
 	@Id
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(updatable = false, nullable = false)
 	private int id;
-	@Column
+	@Column(length = 50)
 	private String name;
-	@Column
+	@Column(length = 50)
 	private String password;
 	
 	public User() {

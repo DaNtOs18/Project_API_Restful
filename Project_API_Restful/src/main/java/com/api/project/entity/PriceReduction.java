@@ -1,15 +1,17 @@
 package com.api.project.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="price_reduction")
-public class PriceReduction {
+public class PriceReduction implements Serializable {
 	
 	@Id
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(updatable = false, nullable = false)
 	private int id;
 	@Column(name="reduced_price")
 	private float reducedPrice;

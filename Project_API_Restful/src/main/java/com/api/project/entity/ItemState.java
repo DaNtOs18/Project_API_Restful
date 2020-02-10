@@ -7,9 +7,10 @@ import javax.persistence.*;
 public class ItemState {
 
 	@Id
-	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(updatable = false, nullable = false)
 	private int id;
-	@Column(name = "is_active")
+	@Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT true")
 	private boolean isActive;
 	//@Column(name = "changed_by")
 	@ManyToOne
@@ -29,11 +30,11 @@ public class ItemState {
 		this.id = id;
 	}
 
-	public boolean isActive() {
+	public boolean getIsActive() {
 		return isActive;
 	}
 
-	public void setActive(boolean isActive) {
+	public void setIsActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 
@@ -52,5 +53,6 @@ public class ItemState {
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
+
 
 }
