@@ -28,10 +28,6 @@ public class PriceReduction implements Serializable {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public float getReducedPrice() {
 		return reducedPrice;
 	}

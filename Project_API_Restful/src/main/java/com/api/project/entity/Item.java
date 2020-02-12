@@ -4,7 +4,20 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "item")
@@ -12,7 +25,7 @@ public class Item implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(updatable = false, nullable = false)
+	@Column
 	private int id;
 	@Column(name = "item_code")
 	private int itemCode;
@@ -20,20 +33,23 @@ public class Item implements Serializable {
 	private String description;
 	@Column
 	private float price;
-	//@Column
-	@OneToOne
+	@OneToOne(cascade=CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "state", nullable = false)
 	private ItemState state;
-	@ManyToMany(mappedBy = "items")
+	/* Cambiada esta anotación por la que se encontraba en Supplier. Removido el Cascade para evitar el borrado de Supplier. */
+	@ManyToMany( fetch = FetchType.EAGER)
+	@JoinTable(name = "item_supplier", 
+	joinColumns = @JoinColumn(name = "item_id"), 
+	inverseJoinColumns = @JoinColumn(name = "supplier_id")
+	)
 	private List<Supplier> suppliers;
 	@Column(name="prices_reduction")
 	@OneToMany
 	private List<PriceReduction> pricesReductions;
 	@Column(name = "creation_at")
 	private Date creationDate;
-	//@Column(name = "created_by")
-	@OneToOne
-	@JoinColumn(name = "created_by", nullable = false)
+	@ManyToOne
+	@JoinColumn(name = "created_by")
 	private User createdBy;
 	
 	public Item() {
@@ -41,10 +57,6 @@ public class Item implements Serializable {
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public int getItemCode() {
@@ -86,6 +98,10 @@ public class Item implements Serializable {
 	public void setSuppliers(List<Supplier> suppliers) {
 		this.suppliers = suppliers;
 	}
+	
+	public void setSupplier(Supplier supplier) {
+        this.suppliers.add(supplier);
+    }
 
 	public List<PriceReduction> getPricesReductions() {
 		return pricesReductions;

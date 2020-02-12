@@ -3,7 +3,17 @@ package com.api.project.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="supplier")
@@ -11,28 +21,17 @@ public class Supplier implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(updatable = false, nullable = false)
+	@Column
 	private int id;
 	@Column(length = 50)
 	private String name;
 	@Column(length = 50)
 	private String country;
-	@ManyToMany
-	@JoinTable(name = "item_supplier", 
-	joinColumns = @JoinColumn(name = "item_id"), 
-	inverseJoinColumns = @JoinColumn(name = "supplier_id")
-	)
+	/* Cambiada esta anotación por la que se encontraba en Item. "mappedBy" hace referencia a la variable en Item. Removido el Cascade para evitar el borrado de Supplier. */
+	@ManyToMany(mappedBy = "suppliers", fetch = FetchType.EAGER)
 	private List<Item> items;
 	
 	public Supplier() {
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -43,12 +42,24 @@ public class Supplier implements Serializable {
 		this.name = name;
 	}
 
-	public String getPassword() {
+	public String getCountry() {
 		return country;
 	}
 
-	public void setPassword(String password) {
-		this.country = password;
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public int getId() {
+		return id;
 	}
 	
 }
