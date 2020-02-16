@@ -19,35 +19,49 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name = "item")
 public class Item implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
+	
 	@Column(name = "item_code")
 	private int itemCode;
+	
 	@Column
 	private String description;
+	
 	@Column
 	private float price;
+	
 	@OneToOne(cascade=CascadeType.REMOVE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "state", nullable = false)
 	private ItemState state;
-	/* Cambiada esta anotación por la que se encontraba en Supplier. Removido el Cascade para evitar el borrado de Supplier. */
-	@ManyToMany( fetch = FetchType.EAGER)
+	
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "item_supplier", 
 	joinColumns = @JoinColumn(name = "item_id"), 
 	inverseJoinColumns = @JoinColumn(name = "supplier_id")
 	)
 	private List<Supplier> suppliers;
-	@Column(name="prices_reduction")
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "itemRelationated")
 	private List<PriceReduction> pricesReductions;
+	
 	@Column(name = "creation_at")
 	private Date creationDate;
+	
 	@ManyToOne
 	@JoinColumn(name = "created_by")
 	private User createdBy;
@@ -59,12 +73,12 @@ public class Item implements Serializable {
 		return id;
 	}
 
-	public int getItemCode() {
-		return itemCode;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setItemCode(int itemCode) {
-		this.itemCode = itemCode;
+	public int getItemCode() {
+		return itemCode;
 	}
 
 	public String getDescription() {

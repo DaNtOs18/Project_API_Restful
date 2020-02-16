@@ -21,7 +21,7 @@ public class ItemState {
 	private int id;
 	@Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT true")
 	private boolean isActive;
-	@ManyToOne(cascade=CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.REMOVE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "changed_by", nullable=true)
 	private User changedBy;
 	@Column

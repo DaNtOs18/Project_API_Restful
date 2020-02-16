@@ -19,15 +19,21 @@ import javax.persistence.Table;
 @Table(name="supplier")
 public class Supplier implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
+	
 	@Column(length = 50)
 	private String name;
+	
 	@Column(length = 50)
 	private String country;
-	/* Cambiada esta anotación por la que se encontraba en Item. "mappedBy" hace referencia a la variable en Item. Removido el Cascade para evitar el borrado de Supplier. */
+	
 	@ManyToMany(mappedBy = "suppliers", fetch = FetchType.EAGER)
 	private List<Item> items;
 	
