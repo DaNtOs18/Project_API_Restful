@@ -1,7 +1,11 @@
 package com.api.project.controller;
 
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +26,17 @@ public class ItemController {
 			ItemStateRepository itemStateRepository) {
 	    this.itemRepository = itemRepository;
 	    this.itemStateRepository = itemStateRepository;
+	  }
+	
+	@GetMapping("/item/{id}")
+	  Item getItem(@PathVariable int id) {
+		Item item = itemRepository.findById(id).get();
+	    return item;
+	  }
+	
+	@GetMapping("/items")
+	  List <Item> getAllItem() {
+	    return itemRepository.findAll();
 	  }
 	
 	 @PostMapping("/item")

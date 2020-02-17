@@ -1,5 +1,9 @@
 package com.api.project.entity;
 
+import java.io.Serializable;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,11 +15,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name="item_state")
-public class ItemState {
+public class ItemState implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
+	@Access(AccessType.PROPERTY)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
@@ -56,6 +66,14 @@ public class ItemState {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 

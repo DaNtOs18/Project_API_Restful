@@ -34,7 +34,7 @@ public class Supplier implements Serializable {
 	@Column(length = 50)
 	private String country;
 	
-	@ManyToMany(mappedBy = "suppliers", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Item> items;
 	
 	public Supplier() {

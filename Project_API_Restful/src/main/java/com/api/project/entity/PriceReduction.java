@@ -5,6 +5,9 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="price_reduction")
 public class PriceReduction implements Serializable {
@@ -29,6 +32,7 @@ public class PriceReduction implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "item_id")
+    @JsonBackReference
 	private Item itemRelationated;
 	
 	public PriceReduction() {
@@ -68,6 +72,10 @@ public class PriceReduction implements Serializable {
 
 	public void setItemRelationated(Item itemRelationated) {
 		this.itemRelationated = itemRelationated;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }
