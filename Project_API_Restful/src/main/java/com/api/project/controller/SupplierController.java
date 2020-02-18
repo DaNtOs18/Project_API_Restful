@@ -1,6 +1,9 @@
 package com.api.project.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +21,17 @@ public class SupplierController {
 	SupplierController(SupplierRepository supplierRepository) {
 		this.supplierRepository = supplierRepository;
 	}
+	
+	@GetMapping("/supplier/{id}")
+	  Supplier getSupplier(@PathVariable int id) {
+		Supplier supplier = supplierRepository.findById(id).get();
+	    return supplier;
+	  }
+	
+	@GetMapping("/suppliers")
+	  List <Supplier> getAllSupplier() {
+	    return supplierRepository.findAll();
+	  }
 
 	@PostMapping("/supplier")
 	void recordSupplier(@RequestBody Supplier supplier) {

@@ -12,6 +12,7 @@ import com.api.project.entity.Item;
 import com.api.project.entity.User;
 import com.api.project.repository.UserRepository;
 
+/* Admin */
 @RestController
 public class UserController {
 	private final UserRepository userRepository;
@@ -42,4 +43,5 @@ public class UserController {
 	void deleteUser(@PathVariable int id) {
 		userRepository.deleteById(id);
 	}
+	
 }

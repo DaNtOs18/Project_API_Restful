@@ -51,7 +51,8 @@ public class Item implements Serializable {
 	@JoinColumn(name = "state", nullable = false)
 	private ItemState state;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "item_supplier", 
 	joinColumns = @JoinColumn(name = "item_id"), 
 	inverseJoinColumns = @JoinColumn(name = "supplier_id")

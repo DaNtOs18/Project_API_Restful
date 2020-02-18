@@ -15,6 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="supplier")
 public class Supplier implements Serializable {
@@ -34,7 +37,12 @@ public class Supplier implements Serializable {
 	@Column(length = 50)
 	private String country;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@JsonBackReference
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "item_supplier", 
+	joinColumns = @JoinColumn(name = "supplier_id"), 
+	inverseJoinColumns = @JoinColumn(name = "item_id")
+	)
 	private List<Item> items;
 	
 	public Supplier() {
