@@ -1,4 +1,4 @@
-package com.api.project.security;
+/*package com.api.project.security;
 
 import javax.sql.DataSource;
 
@@ -48,6 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder;
 	}
-}
+}*/
 
 

@@ -9,8 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-@Entity
+@Entity(name = "user")
 @Table(name="user")
 public class User implements Serializable{
 
@@ -29,11 +30,18 @@ public class User implements Serializable{
 	@Column(length = 50)
 	private String password;
 	
+	@Transient
+	private String token;
+	
 	public User() {
 	}
 
 	public int getId() {
 		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -50,6 +58,14 @@ public class User implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 }
