@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -37,10 +39,10 @@ public class Item implements Serializable {
 	@Column
 	private int id;
 	
-	@Column(name = "item_code")
+	@Column(name = "item_code", unique = true, nullable = false)
 	private int itemCode;
 	
-	@Column
+	@Column(nullable = false)
 	private String description;
 	
 	@Column
@@ -63,7 +65,7 @@ public class Item implements Serializable {
 	@OneToMany(mappedBy="itemRelationated")
 	private List<PriceReduction> pricesReductions;
 	
-	@Column(name = "creation_at")
+	@Column(name = "creation_at", insertable = false, updatable = false, columnDefinition="DATE DEFAULT CURRENT_TIMESTAMP")
 	private Date creationDate;
 	
 	@ManyToOne
@@ -143,6 +145,13 @@ public class Item implements Serializable {
 
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", itemCode=" + itemCode + ", description=" + description + ", price=" + price
+				+ ", state=" + state + ", suppliers=" + suppliers + ", pricesReductions=" + pricesReductions
+				+ ", creationDate=" + creationDate + ", createdBy=" + createdBy + "]";
 	}
 	
 }

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,6 @@ import com.api.project.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-
 @RestController
 public class UserController {
 	private final UserRepository userRepository;
@@ -30,8 +30,8 @@ public class UserController {
 	UserController(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-	
-	@PostMapping("login")
+
+	@PostMapping("/login")
 	public User login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
 		User userDB = userCredentials(username,pwd);
 		User user = new User();
@@ -43,19 +43,11 @@ public class UserController {
 		}		
 		return user;	
 	}
-	
-	/*
-	@RequestMapping(value="/", produces = "text/html")
-	public String welcome() {
-		return "login.html";
-	}
-	*/
-	
 
 	public User userCredentials (String name, String password) {
 		return userRepository.findUser(name, password);
 	}
-	
+
 	private String getJWTToken(String username) {
 		String secretKey = "mySecretKey";
 		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
@@ -67,8 +59,8 @@ public class UserController {
 				.setSubject(username)
 				.claim("authorities",
 						grantedAuthorities.stream()
-								.map(GrantedAuthority::getAuthority)
-								.collect(Collectors.toList()))
+						.map(GrantedAuthority::getAuthority)
+						.collect(Collectors.toList()))
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + 600000))
 				.signWith(SignatureAlgorithm.HS512,
@@ -76,12 +68,12 @@ public class UserController {
 
 		return "Bearer " + token;
 	}
-	
+
 	@GetMapping("/user/{id}")
-	  User getUser(@PathVariable int id) {
-	    return userRepository.findById(id).get();
-	  }
-	
+	User getUser(@PathVariable int id) {
+		return userRepository.findById(id).get();
+	}
+
 	@PostMapping("/user")
 	void recordUser(@RequestBody User user) {
 		userRepository.save(user); 
@@ -99,5 +91,5 @@ public class UserController {
 	void deleteUser(@PathVariable int id) {
 		userRepository.deleteById(id);
 	}
-	
+
 }
