@@ -16,9 +16,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.api.project.controller.SupplierController;
-import com.api.project.entity.Supplier;
-import com.api.project.repository.SupplierRepository;
 import com.api.project.security.JWTAuthorizationFilter;
 
 @SpringBootApplication(scanBasePackages={
@@ -46,14 +43,7 @@ public class ProjectApplication {
 				.and().cors();
 		}
 	}
-	
-	/* @Bean
-	    CorsConfigurationSource corsConfigurationSource() {
-	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-	        return source;
-	    }*/
-	
+		
 	   @Bean
 	    public CorsConfigurationSource corsConfigurationSource() {
 	        CorsConfiguration configuration = new CorsConfiguration();

@@ -6,14 +6,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -69,16 +67,19 @@ public class UserController {
 		return "Bearer " + token;
 	}
 
+	/* Admin */
 	@GetMapping("/user/{id}")
 	User getUser(@PathVariable int id) {
 		return userRepository.findById(id).get();
 	}
 
+	/* Admin */
 	@PostMapping("/user")
 	void recordUser(@RequestBody User user) {
 		userRepository.save(user); 
 	}
 
+	/* Admin */
 	@PutMapping("/user/{id}")
 	void updateUser(@RequestBody User user, @PathVariable int id) {
 		User userToUpdate = userRepository.getOne(id);
@@ -87,6 +88,7 @@ public class UserController {
 		userRepository.save(userToUpdate);
 	}
 
+	/* Admin */
 	@DeleteMapping("/user/{id}")
 	void deleteUser(@PathVariable int id) {
 		userRepository.deleteById(id);
