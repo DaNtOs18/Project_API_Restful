@@ -62,7 +62,7 @@ public class Item implements Serializable {
 	private List<Supplier> suppliers;
 	
 	@JsonManagedReference	
-	@OneToMany(mappedBy="itemRelationated")
+	@OneToMany(mappedBy="itemRelationated",cascade = CascadeType.REMOVE)
 	private List<PriceReduction> pricesReductions;
 	
 	@Column(name = "creation_at", insertable = false, updatable = false, columnDefinition="DATE DEFAULT CURRENT_TIMESTAMP")
@@ -85,6 +85,10 @@ public class Item implements Serializable {
 
 	public int getItemCode() {
 		return itemCode;
+	}
+	
+	public void setItemCode(int itemCode) {
+		this.itemCode = itemCode;
 	}
 
 	public String getDescription() {
