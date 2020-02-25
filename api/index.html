@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <!--NAV-->
+    <nav id="navbar" class="hidden fixed top-0 z-50 w-full bg-teal-200 shadow-lg">
+        <div class="container lg:px-16 px-4 mx-auto">
+            <ul class="flex flex-row items-center justify-center py-4">
+                <li class="px-8">
+                    <button onclick="getAllItems('items_list')" class="bg-teal-400 border border-teal-600 rounded py-2 px-6 text-lg font-semibold cursor-pointer hover:bg-teal-600 hover:text-white">Items</button>
+                </li>
+                <li class="px-8">
+                    <button onclick="showSectionWithId('create_supplier')" class="bg-teal-400 border border-teal-600 rounded py-2 px-6 text-lg font-semibold cursor-pointer hover:bg-teal-600 hover:text-white">Suppliers</button>
+                </li>
+                <li class="px-8">
+                    <button onclick="getAllItems('create_price_reduction')" class="bg-teal-400 border border-teal-600 rounded py-2 px-6 text-lg font-semibold cursor-pointer hover:bg-teal-600 hover:text-white">Prices Reduction</button>
+                </li>
+                <li class="px-8">
+                    <button onclick="" class="bg-teal-400 border border-teal-600 rounded py-2 px-6 text-lg font-semibold cursor-pointer hover:bg-teal-600 hover:text-white">Logout</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--NAV-->
+    
+    <!--SEPARATOR-->
+    <div class="h-16 w-full"></div>
+    <!--SEPARATOR-->
+    
+    <section class="h-screen w-full my-6">
+        <div class="container h-full mx-auto lg:px-16 px-4 flex flex-col items-center justify-start">
+            <!--LOGIN-->
+            <div id="error_login" class="hidden bg-red-500 w-1/3 mt-32 flex flex-col">
+                <h3 class="text-center font-bold text-lg italic">
+                    Invalid Credentials
+                </h3>
+            </div>
+            <div id="login" class="border-2 border-gray-500 w-1/3 mb-32 flex flex-col">
+                <h2 class="text-center text-3xl font-bold italic mb-8 mt-2">
+                    Login
+                </h2>
+                <input type="text" id="user" placeholder="User" class="w-10/12 border mx-auto placeholder-gray-600 py-1 px-2 text-xl focus:outline-none focus:bg-gray-200 rounded">
+                <input type="password" id="password" placeholder="Password" class="my-3 w-10/12 border mx-auto placeholder-gray-600 py-1 px-2 text-xl focus:outline-none focus:bg-gray-200 rounded">
+                <button type="button" onclick="logIn()" class="w-10/12 mx-auto my-4 bg-gray-400 border border-gray-600 rounded py-2 px-6 text-lg font-semibold cursor-pointer hover:bg-gray-600 hover:text-white">Sign in</button>
+            </div>
+            <!--LOGIN-->
+            <!--MENU-->
+            <div id="menu" class="hidden border-2 border-gray-500 w-1/3 my-32 flex flex-col">
+                <h2 class="text-center text-3xl font-bold italic mb-4 mt-2">
+                    Menu
+                </h2>
+                <ul class="w-full flex flex-col items-center justify-center py-4">
+                    <li class="w-10/12 mx-auto mb-2">
+                        <button onclick="getAllItems('items_list')" class="py-1 w-full inline-block mx-auto bg-teal-400 border border-teal-600 rounded text-lg font-semibold cursor-pointer hover:bg-teal-600 hover:text-white">Items</button>
+                    </li>
+                    <li class="w-10/12 mx-auto mb-2">
+                        <button onclick="showSectionWithId('create_supplier')" class="py-1 w-full inline-block mx-auto bg-teal-400 border border-teal-600 rounded text-lg font-semibold cursor-pointer hover:bg-teal-600 hover:text-white">Suppliers</button>
+                    </li>
+                    <li class="w-10/12 mx-auto mb-2">
+                        <button onclick="getAllItems('create_price_reduction')" class="py-1 w-full inline-block mx-auto bg-teal-400 border border-teal-600 rounded text-lg font-semibold cursor-pointer hover:bg-teal-600 hover:text-white">Prices Reduction</button>
+                    </li>
+                    <li class="w-10/12 mx-auto mb-2">
+                        <button class="py-1 w-full inline-block mx-auto bg-teal-400 border border-teal-600 rounded text-lg font-semibold cursor-pointer hover:bg-teal-600 hover:text-white">Logout</button>
+                    </li>
+                </ul>
+            </div>
+            <!--MENU-->
+            <!--ITEM LIST-->              
+            <div id="items_list" class="hideable-section w-full my-8 flex flex-col items-start">
+                <div class="my-1 border-2 border-black flex flex-row w-full justify-center items-center text-xl font-bold">
+                    <span class="my-1 w-2/6 text-center py-1">
+                        Item Code
+                    </span>
+                    <span class="my-1 w-2/6 text-center py-1 ">
+                        Description
+                    </span>
+                    <span class="my-1 w-2/6 flex justify-center">
+                        Info
+                    </span>
+                </div>
+                <div v-for="item in items" class="my-1 border-2 flex flex-row w-full justify-center items-center text-lg font-semibold">
+                    <span class="w-2/6 text-center py-1">
+                        {{item.itemCode}}
+                    </span>
+                    <span class="w-2/6 text-center py-1 overflow-hidden break-lines">
+                        {{item.description}}
+                    </span>
+                    <span class="w-2/6 flex justify-center">
+                        <button :value=item.id onclick="getItem(this.value)" class="py-1 w-1/2 inline-block mx-auto bg-blue-400 border border-blue-600 rounded text-lg font-semibold cursor-pointer hover:bg-blue-600 hover:text-white">Edit</button>
+                    </span>
+                </div>
+                <button onclick="getAllSuppliers('create_item')" class="fixed top-0 mt-32 left-0 ml-2 lg:ml-24 py-1 w-1/6 lg:w-1/12 inline-block mx-auto bg-orange-400 border border-orange-600 rounded text-lg font-semibold cursor-pointer hover:bg-orange-600 hover:text-white">Create Item</button>
+            </div>
+            <!--ITEM LIST-->
+            <!--ITEM DETAILS-->
+            <div id="item_details" class="hideable-section w-full flex flex-col text-lg">
+                <h3 class="text-center text-2xl font-bold my-4">Item Details</h3>
+                <input type="hidden" id="item_id" :value="item.id">
+                <div class="w-full">
+                    <div class="flex flex-row items-center justify-start my-2">
+                        <span class="w-2/6 text-center font-semibold">
+                            <div class="w-10/12 text-right"> Item Code: </div>
+                        </span>
+                        <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="item_code" :value="item.itemCode" readonly>
+                    </div>
+                    <div class="flex flex-row items-center justify-start my-2">
+                        <span class="w-2/6 text-center font-semibold">
+                            <div class="w-10/12 text-right"> Description: </div>
+                        </span>
+                        <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="description" :value="item.description">
+                    </div>
+                    <div class="flex flex-row items-center justify-start my-2">
+                        <span class="w-2/6 text-center font-semibold">
+                            <div class="w-10/12 text-right"> Price: </div>
+                        </span>
+                        <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="price" :value="item.price">
+                    </div>
+                    <div class="flex flex-row items-center justify-start my-2">
+                        <span class="w-2/6 text-center font-semibold">
+                            <div class="w-10/12 text-right"> Prices Reduction: </div>
+                        </span>
+                        <div class="w-4/6 flex flex-col">
+                            <div class="w-full flex">
+                                <div class="w-1/2 flex">
+                                    <div class="lg:w-1/3 flex items-center justify-center">
+                                        <span class="bg-gray-200 w-full font-semibold  text-center">
+                                            Value
+                                        </span> 
+                                    </div>
+                                    <div class="lg:w-1/3 flex items-center justify-center">
+                                        <span class="bg-gray-200 w-full font-semibold  text-center">
+                                            Start
+                                        </span> 
+                                    </div>
+                                    <div class="lg:w-1/3 flex items-center justify-center">
+                                        <span class="bg-gray-200 w-full font-semibold  text-center">
+                                            End
+                                        </span> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-for="priceReduction in item.pricesReductions" :id="'price_reduction'+priceReduction.id" name="price_reduction" class="w-full flex my-1">
+                                <div class="w-1/2 flex">
+                                    <input type="hidden" :value="priceReduction.id" name="price_reduction_id">
+                                    <div class="lg:w-1/3 flex flex-col items-center justify-center">
+                                        <input type="text" name="price_reduction_red" class="w-full text-center" :value="priceReduction.reducedPrice" readonly>
+                                    </div>
+                                    <div class="lg:w-1/3 flex flex-col items-center justify-center"> 
+                                        <input type="hidden" name="price_reduction_start" class="w-full text-center" :value="priceReduction.startDate" readonly>
+                                        <input type="text" class="w-full text-center" :value="priceReduction.startDate | dateFormat" readonly>
+                                    </div>
+                                    <div class="lg:w-1/3 flex flex-col items-center justify-center">
+                                        <input type="hidden" name="price_reduction_end" class="w-full text-center" :value="priceReduction.endDate" readonly>
+                                        <input type="text" class="w-full text-center" :value="priceReduction.endDate | dateFormat" readonly>
+                                    </div>
+                                </div>
+                                <button :value="priceReduction.id" onclick="removePriceReduction(this)" class="w-1/4 inline-block mx-auto bg-red-400 border border-red-600 rounded text-lg font-semibold cursor-pointer hover:bg-red-600 hover:text-white">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center justify-start my-2">
+                        <span class="w-2/6 text-center font-semibold">
+                            <div class="w-10/12 text-right">Suppliers: </div>
+                        </span>
+                        <div class="w-4/6 flex flex-col">
+                            <div class="w-full flex">
+                                <div class="w-1/2 flex">
+                                    <div class="lg:w-1/2 flex items-center justify-center">
+                                        <span class="bg-gray-200 w-full font-semibold  text-center">
+                                            Name
+                                        </span> 
+                                    </div>
+                                    <div class="lg:w-1/2 flex items-center justify-center">
+                                        <span class="bg-gray-200 w-full font-semibold  text-center">
+                                            Country
+                                        </span> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-full flex my-1">
+                                <div class="w-1/2 flex">
+                                    <div class="w-full flex flex-col items-center justify-center">
+                                        <div class="w-full text-center">
+                                            <select class="w-full border mx-auto" name="suppliers" id="suppliers_select">
+                                                <option v-for="supp in suppliers" :value="supp.id">
+                                                    {{supp.name}} from {{supp.country}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="addSupplierRow()" class="w-1/4 inline-block mx-auto bg-orange-400 border border-orange-600 rounded text-lg font-semibold cursor-pointer hover:bg-orange-600 hover:text-white">Add</button>
+                            </div>
+                            <div id="supplier_list">
+                                <div v-for="supplier in item.suppliers" :id="'supplier'+supplier.id" class="w-full flex my-1">
+                                    <input type="hidden" name="supplier_id" :value="supplier.id">
+                                    <div class="w-1/2 flex">
+                                        <div class="lg:w-1/2 flex flex-col items-center justify-center">
+                                            <input class="w-full text-center" name="supplier_name" :value="supplier.name" readonly> 
+                                        </div>
+                                        <div class="lg:w-1/2 flex flex-col items-center justify-center"> 
+                                            <input type="text" class="w-full text-center" name="supplier_country" :value="supplier.country" readonly>
+                                        </div>
+                                    </div>
+                                    <button class="w-1/4 inline-block mx-auto bg-red-400 border border-red-600 rounded text-lg font-semibold cursor-pointer hover:bg-red-600 hover:text-white">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center justify-start my-2">
+                        <span class="w-2/6 text-center font-semibold">
+                            <div class="w-10/12 text-right"> State: </div>
+                        </span>
+                        <div class="w-2/6">
+                            <div class="flex flex-row items-center justify-start my-2">
+                                <span class="text-center font-semibold mr-8">
+                                    <div class="w-10/12 text-right"> Active: </div>
+                                </span>
+                                <label class="switch">
+                                    <input type="checkbox" id="state_check" :checked="item.state.isActive" onchange='handleChange(this);'>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div> 
+                            <div id="reason" v-show="item.state.isActive === false" class="flex flex-row items-center justify-start my-2">
+                                <span class="text-center font-semibold mr-2">
+                                    <div class="w-10/12 text-right"> Reason: </div>
+                                </span>
+                                <textarea class="w-full border focus:outline-none px-2 py-1 resize-none" type="text" id="reason_txt" value=""></textarea>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="flex flex-row items-center justify-start my-2">
+                        <span class="w-2/6 text-center font-semibold">
+                            <div class="w-10/12 text-right"> Created by: </div>
+                        </span>
+                        <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="created_by" :value="item.createdBy.name" readonly>
+                    </div>
+                    <div class="flex flex-row items-center justify-start my-2">
+                        <span class="w-2/6 text-center font-semibold">
+                            <div class="w-10/12 text-right"> Creation Date: </div>
+                        </span>
+                        <input class="w-2/6 border focus:outline-none px-2 py-1" type="hidden" id="creation_date" :value="item.creationDate" readonly>
+                        <input class="w-2/6 border focus:outline-none px-2 py-1" type="text"  :value="item.creationDate | dateFormat" readonly>
+                    </div>
+                    <button onclick="updateItem()" class="fixed mt-32 top-0 left-0 ml-2 lg:ml-48 py-1 w-1/6 lg:w-1/12 inline-block mx-auto bg-green-400 border border-green-600 rounded text-lg font-semibold cursor-pointer hover:bg-green-600 hover:text-white">Update</button>
+                </div> 
+            </div>
+            <!--ITEM DETAILS-->
+            <!--CREATE ITEM-->
+            <div id="create_item" class="hideable-section w-full flex flex-col text-lg">
+                <h3 class="text-center text-2xl font-bold my-4 ">New Item</h3>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right"> Item Code: </div>
+                    </span>
+                    <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="new_item_code" value="">
+                </div>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right"> Description: </div>
+                    </span>
+                    <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="new_description" value="">
+                </div>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right"> Price: </div>
+                    </span>
+                    <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="new_price" value="">
+                </div>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right">Suppliers: </div>
+                    </span>
+                    <div class="w-4/6 flex flex-col">
+                        <div class="w-full flex">
+                            <div class="w-1/2 flex">
+                                <div class="lg:w-1/2 flex items-center justify-center">
+                                    <span class="bg-gray-200 w-full font-semibold  text-center">
+                                        Name
+                                    </span> 
+                                </div>
+                                <div class="lg:w-1/2 flex items-center justify-center">
+                                    <span class="bg-gray-200 w-full font-semibold  text-center">
+                                        Country
+                                    </span> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full flex my-1">
+                            <div class="w-1/2 flex">
+                                <div class="w-full flex flex-col items-center justify-center">
+                                    <div class="w-full text-center">
+                                        <select class="w-full border mx-auto" name="suppliers" id="supplier_new_item">
+                                            <option v-for="supplier in suppliers" :value="supplier.id">
+                                                {{supplier.name}} from {{supplier.country}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--
+                            <button class="w-1/4 inline-block mx-auto bg-orange-400 border border-orange-600 rounded text-lg font-semibold cursor-pointer hover:bg-orange-600 hover:text-white">Add</button>
+                            -->
+                        </div>
+                        <!--
+                        <div class="w-full flex my-1">
+                            <div class="w-1/2 flex">
+                                <div class="lg:w-1/2 flex flex-col items-center justify-center">
+                                    <div class="w-full text-center">
+                                        Supp1
+                                    </div>
+                                </div>
+                                <div class="lg:w-1/2 flex flex-col items-center justify-center"> 
+                                    <div class="w-full text-center">
+                                        Spain
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="createItem()" class="w-1/4 inline-block mx-auto bg-red-400 border border-red-600 rounded text-lg font-semibold cursor-pointer hover:bg-red-600 hover:text-white">Remove</button>
+                        </div>
+                        -->
+                    </div>
+                </div>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right"> State: </div>
+                    </span>
+                    <div class="w-2/6">
+                        <div class="flex flex-row items-center justify-start my-2">
+                            <span class="text-center font-semibold mr-8">
+                                <div class="w-10/12 text-right"> Active: </div>
+                            </span>
+                            <label class="switch">
+                                <input type="checkbox" id="state_check" checked onchange='handleChange(this);'>
+                                <span class="slider round"></span>
+                            </label>
+                        </div> 
+                        <div id="reason_new" class="hidden flex-row items-center justify-start my-2">
+                            <span class="text-center font-semibold mr-2">
+                                <div class="w-10/12 text-right"> Reason: </div>
+                            </span>
+                            <textarea class="w-full border focus:outline-none px-2 py-1 resize-none" type="text" id="reason_txt" value=""></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="createItem()" class="fixed top-0 mt-32 left-0 ml-2 lg:ml-48 py-1 w-1/6 lg:w-1/12 inline-block mx-auto bg-green-400 border border-green-600 rounded text-lg font-semibold cursor-pointer hover:bg-green-600 hover:text-white">Create</button>
+            </div>
+            <!--CREATE ITEM-->
+            <!--CREATE SUPPLIER-->
+            <div id="create_supplier" class="hideable-section w-full flex flex-col text-lg">
+                <h3 class="text-center text-2xl font-bold my-4 ">New Supplier</h3>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right"> Name: </div>
+                    </span>
+                    <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="name_supplier" value="">
+                </div>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right"> Country: </div>
+                    </span>
+                    <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="country_supplier" value="">
+                </div>
+                <button onclick="createSupplier()" class="fixed top-0 mt-32 left-0 ml-2 lg:ml-48 py-1 w-1/6 lg:w-1/12 inline-block mx-auto bg-green-400 border border-green-600 rounded text-lg font-semibold cursor-pointer hover:bg-green-600 hover:text-white">Create</button>
+            </div>
+            <!--CREATE SUPPLIER-->
+            <!--CREATE PRICE REDUCTIONS-->
+            <div id="create_price_reduction" class="hideable-section w-full flex flex-col text-lg">
+                <h3 class="text-center text-2xl font-bold my-4 ">New Price Reduction</h3>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right"> Value: </div>
+                    </span>
+                    <input class="w-2/6 border focus:outline-none px-2 py-1" type="text" id="new_value" value="">
+                </div>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right"> Start Date: </div>
+                    </span>
+                    <input class="w-2/6 border focus:outline-none px-2 py-1" type="date" id="new_start_date" value="">
+                </div>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right"> End Date: </div>
+                    </span>
+                    <input class="w-2/6 border focus:outline-none px-2 py-1" type="date" id="new_end_date" value="">
+                </div>
+                <div class="flex flex-row items-center justify-start my-2">
+                    <span class="w-2/6 text-center font-semibold">
+                        <div class="w-10/12 text-right">Item: </div>
+                    </span>
+                    <div class="w-4/6 flex flex-col">
+                        <div class="w-full flex my-1">
+                            <div class="w-1/2 flex">
+                                <div class="w-full flex flex-col items-center justify-center">
+                                    <div class="w-full text-center">
+                                        <select class="w-full border mx-auto" name="item" id="item_relationated">
+                                            <option v-for="item in items" :value="item.id">
+                                                {{item.itemCode}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="createPriceReduction()" class="fixed top-0 mt-32 left-0 ml-2 lg:ml-48 py-1 w-1/6 lg:w-1/12 inline-block mx-auto bg-green-400 border border-green-600 rounded text-lg font-semibold cursor-pointer hover:bg-green-600 hover:text-white">Create</button>
+            </div>
+            <!--CREATE PRICE REDUCTIONS-->
+        </div>
+    </section> 
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>
